@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebGIS - Tool for Urban Forestry</title>
+    <link rel="stylesheet" href="ol.css">
+    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="chart.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+        #map {
+            width: 100%;
+            height: calc(100% - 30px); /* Adjust height to accommodate latitude and longitude display */
+        }
+        .coordinates-display {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <div class="coordinates-display" id="coordinatesDisplay"></div>
+   
+    <script src="ol.js"></script>
+    <script>
+        // Create a map view
+        var mapView = new ol.View({
+            center: ol.proj.fromLonLat([72.8710, 19.0211]),
+            zoom: 18.2
+        });
+
+        // Create a map instance
+        var map = new ol.Map({
+            target: 'map',
+            view: mapView
+        });
+
+        // Add a mouse move event listener to update latitude and longitude display
+        map.on('pointermove', function(event) {
+            var lonLat = ol.proj.toLonLat(event.coordinate);
+            var longitude = lonLat[0].toFixed(6);
+            var latitude = lonLat[1].toFixed(6);
+            var coordinatesDisplay = document.getElementById('coordinatesDisplay');
+            coordinatesDisplay.innerText = 'Longitude: ' + longitude + ' | Latitude: ' + latitude;
+        });
+    </script>
+</body>
+</html>
